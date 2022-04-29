@@ -36,23 +36,23 @@ class ReservationController extends Controller
         
         $reservation_no = "R_".$now."_".$request->goods_id."_".$user_id;
 
-        $pos_goods = array(); // 상품 수량 0인 상품                
+        $impos_goods = array(); // 상품 수량 0인 상품                
         
         $dates = Quantity::where('date','>=', $request->start_date )
         ->where('date','<', $request->end_date )
         ->where('goods_id',$request->goods_id)
-        ->where('qty','>','0')
+        ->where('qty','<','1')
         ->get();
 
         if(count($dates)){
             $i =0;
             foreach($dates as $date){
-                $pos_goods[$i] = $date['goods_id'];
+                $impos_goods[$i] = $date['goods_id'];
                 $i++;
             }   
         }
 
-        $goods = Goods::where('id',$request->goods_id)->whereIn('id',$pos_goods)
+        $goods = Goods::where('id',$request->goods_id)->whereNotIn('id',$impos_goods)
                         ->where('start_date','<=',$request->start_date)
                         ->where('end_date','>=',$request->end_date)
                         ->first();
