@@ -714,11 +714,15 @@ class ReservationController extends Controller
 
             $result = Reservation::where('id', $reservation_id)->update(['status' => 'P']); // 입금확인
 
+            $hotel_info = Hotel::where('id', $res_info->hotel_id)->first();
+
+            $partner_info = User::where('id', $hotel_info->partner_id)->first();
+        
             $title = "[루밍 입금 확인 요청]";
             $content = $res_info->hotel_name." 담당자님 ".$res_info->name."님이 입금 확인을 요청하셨습니다. \n\n예약번호 : ".$res_info->reservation_no."\n"."예약자 : ".$res_info->name."\n"."입금액 : ".number_format($res_info->reservation_price)."원";
             
             $sms = new \stdClass;
-            $sms->phone = str_replace('-','',$res_info->hotel_tel);
+            $sms->phone = str_replace('-','',$partner_info->phone);
             $sms->title = $title;
             $sms->content = $content;
 
@@ -743,7 +747,7 @@ class ReservationController extends Controller
             Email::send($email);
 
             $return->status = "200";
-            $return->msg = "예약 확인이 요청되었습니다." ;
+            $return->msg = "입금 확인이 요청되었습니다." ;
         }else{
             $return->status = "500";
             $return->reason = "입금확인 요청 권한이 없습니다." ;
