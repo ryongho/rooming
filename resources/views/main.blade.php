@@ -17,6 +17,17 @@
         <meta property="og:image" content="/images/main_01.png"/>
         <meta property="og:url" content="https://rooming.link/"/>
 
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-230056949-1">
+        </script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-230056949-1');
+        </script>
+
         <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
         <script type="text/javascript">
             if(!wcs_add) var wcs_add = {};
